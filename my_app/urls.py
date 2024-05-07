@@ -19,17 +19,13 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
 from item.views import Item
-from cart.views import  CartItemView,checkout ,add_to_cart
-from cart.models import CartItem,Cart
+from cart.views import add_to_cart,cart , checkout
 
 urlpatterns = [
     path('', include('core.urls')),
-    #path('', include('cart.urls')),
-    path('cart/',CartItem,name='cart'),
-    path('cart/checkout/',checkout,name='checkout'),
-    path('add_to_cart/<int:product_id>/',add_to_cart,name='add_to_cart'),
-    path('add_cart',CartItemView.as_view(),name='CartItemView'),
+    path('cart/', include('cart.urls')),
     path('items/', include('item.urls')), 
+    path('order/', include('order.urls')),
     path('inbox/', include('conversation.urls')),
     path('admin/', admin.site.urls),
 ] + static(settings.MEDIA_URL , document_root =settings.MEDIA_ROOT)

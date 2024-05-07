@@ -32,12 +32,12 @@ LOGOUT_REDIRECT_URL = '/'
 
 SESSION_COOKIE_AGE = 86400
 CART_SESSION_ID = 'cart'
-
+STRIPE_API_KEY_PUBLISHABLE = 'pk_test_51PDq7mA0ll4ECJoP02B50WqWYH4kqgPSZ4MX8mFqnOdcqZROcFksqJCXH3GUbzbPHnNN4uHaT5oOAqEMBMDT8oms00sEmy30V1'
+STRIPE_API_KEY_HIDDEN = 'sk_test_51PDq7mA0ll4ECJoPo6TsQDWOEfn58M12NlM8uECH8ZasvcKXEcKnWZslePSVDemC7kDcOSP1mlEunE6OGn7cD1wv00XX1Hr3ky'
 # Application definition
 
 INSTALLED_APPS = [
     'jazzmin',
-    'rest_framework',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -46,9 +46,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'core',
     'cart',
+    'order',
     'conversation',
     'item',
-    
 ]
 
 MIDDLEWARE = [
@@ -75,7 +75,6 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'cart.context_processors.cart',
-
             ],
         },
     },

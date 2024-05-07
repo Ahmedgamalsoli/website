@@ -2,6 +2,7 @@ from django.db import models
 from django.core.files import File
 from django.contrib.auth.models import User
 
+from PIL import Image
 from io import BytesIO
 # Create your models here.
  
@@ -43,5 +44,17 @@ class Item(models.Model):
 
                     return self.thumbnail.url
                 else:
-                    return 'https://via.placeholder.com/240x240x.jpg'   
+                    return 'https://via.placeholder.com/240x240x.jpg'
+        
+        def make_thumbnail(self, image, size=(300, 300)):
+            img = Image.open(image)
+            img.convert('RGB')
+            img.thumbnail(size)
+
+            thumb_io = BytesIO()
+            img.save(thumb_io, 'JPEG', quality=85)
+
+            thumbnail = File(thumb_io, name=image.name)
+
+            return thumbnail
             
