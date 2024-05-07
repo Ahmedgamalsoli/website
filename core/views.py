@@ -4,6 +4,8 @@ from item.models import Category, Item
 
 from .forms import SignupForm , OTPForm ,LoginForm
 
+from django.contrib.auth.decorators import login_required
+
 from django.contrib.auth import authenticate,login,logout
 
 from .utils import send_otp
@@ -15,6 +17,23 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 
 import pyotp
+        
+@login_required
+def myaccount(request):
+    return render(request, 'core/myaccount.html')
+
+@login_required
+def edit_myaccount(request):
+    if request.method == 'POST':
+        user = request.user
+        user.first_name = request.POST.get('first_name')
+        user.last_name = request.POST.get('last_name')
+        user.email = request.POST.get('email')
+        user.username = request.POST.get('username')
+        user.save()
+
+        return redirect('core:myaccount')
+    return render(request, 'core/edit_myaccount.html')
         
 def login_view(request):
     form = LoginForm(request.POST or None)
@@ -35,7 +54,6 @@ def login_view(request):
     else:
         # If request method is not POST, render the login page with an empty form
         return render(request, 'core/login.html', {'form': form})
-
 
 
 

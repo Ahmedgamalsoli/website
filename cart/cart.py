@@ -1,6 +1,6 @@
 from django.conf import settings
 
-from  item.models import Item
+from item.models import Item
 
 class Cart(object):
     def __init__(self, request):
@@ -17,7 +17,7 @@ class Cart(object):
             self.cart[str(p)]['product'] = Item.objects.get(pk=p)
         
         for item in self.cart.values():
-            item['total_price'] = int(item['product'].price * item['quantity']) / 100
+            item['total_price'] = int(item['product'].price * item['quantity'])
 
             yield item
     
@@ -31,7 +31,7 @@ class Cart(object):
     def add(self, product_id, quantity=1, update_quantity=False):
         product_id = str(product_id)
 
-        if product_id not in self.cart or  product_id in self.cart:
+        if product_id not in self.cart:
             self.cart[product_id] = {'quantity': 1, 'id': product_id}
         
         if update_quantity:
@@ -47,14 +47,14 @@ class Cart(object):
             del self.cart[product_id]
             self.save()
     
- #  def get_total_cost(self):
- #       for p in self.cart.keys():
-##         self.cart[str(p)]['product'] = Item.objects.get(pk=p)
-##
-##     return int(sum(item['product'].price * item['quantity'] for item in self.cart.values())) / 100
-## 
-## def get_item(self, product_id):
-##     if product_id in self.cart:
-##         return self.cart[str(product_id)]
-##     else:
-#         return None
+    def get_total_cost(self):
+        for p in self.cart.keys():
+            self.cart[str(p)]['product'] = Item.objects.get(pk=p)
+
+        return int(sum(item['product'].price * item['quantity'] for item in self.cart.values()))
+    
+    def get_item(self, product_id):
+        if str(product_id) in self.cart:
+            return self.cart[str(product_id)]
+        else:
+            return None
